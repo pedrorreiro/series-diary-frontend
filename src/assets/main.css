@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .poster {
+    @apply h-[370px] w-[240px] rounded-2xl;
+  }
+}

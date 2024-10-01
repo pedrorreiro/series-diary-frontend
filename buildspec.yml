@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+
+  pre_build:
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm install
+
+  build:
+    commands:
+      - echo "Building..."
+      - npm run build
+
+  post_build:
+    commands:
+      - echo "Deploying to S3"
+      - aws s3 sync dist/ s3://$S3_BUCKET_NAME/dist/
+
+cache:
+  paths:
+    - node_modules/**/*
