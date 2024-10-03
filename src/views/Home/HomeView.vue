@@ -2,7 +2,7 @@
   <div @scroll="handleScroll" class="h-screen overflow-y-auto">
     <div class="mx-auto flex max-w-[1200px] flex-col gap-2 px-4 py-8" id="top">
       <div class="mx-auto flex w-full max-w-[500px] flex-col gap-4">
-        <h1 class="font-poppins text-center text-3xl font-semibold">Diário de Séries</h1>
+        <h1 class="text-center font-poppins text-3xl font-semibold">Diário de Séries</h1>
 
         <SearchBar v-model="serieQuery" @onAutoCompleteClick="async () => await fetchSeries(1)" />
 
@@ -21,14 +21,14 @@
       </div>
 
       <div class="flex flex-wrap justify-center gap-2" v-if="isLoading && page === 1">
-        <div class="skeleton-pulse poster" v-for="fakeSerie in new Array(8)" :key="fakeSerie" />
+        <div class="poster skeleton-pulse" v-for="fakeSerie in new Array(8)" :key="fakeSerie" />
       </div>
 
       <div>
         <a href="#top">
           <div
             v-if="series && series?.length > 0"
-            class="bg-primary-text fixed bottom-6 right-6 z-10 rounded-full p-2"
+            class="fixed bottom-6 right-6 z-10 rounded-full bg-primary-text p-2"
           >
             <IconChevronUp class="h-5 w-5 text-primary" />
           </div>
@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
 import SearchBar from '@/components/SearchBar/SearchBar.vue'
-import SeriePoster from '@/components/Serie/SeriePoster.vue'
+import SeriePoster from '@/components/SeriePoster/SeriePoster.vue'
 
 import SerieService from '@/services/SerieService/SerieService'
 import type { QuerySeriesResponse, Serie } from '@/services/SerieService/types'
