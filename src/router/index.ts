@@ -1,4 +1,5 @@
 import HomeView from '@/views/Home/HomeView.vue'
+import ShowDetails from '@/views/ShowDetails/ShowDetails.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -11,6 +12,11 @@ const router = createRouter({
       meta: {
         requiresData: true
       }
+    },
+    {
+      path: '/show/:id',
+      name: 'show',
+      component: ShowDetails
     },
     {
       path: '/error',

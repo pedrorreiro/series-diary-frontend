@@ -2,7 +2,7 @@
   <div class="dropdown w-full">
     <input
       v-model="serieQuery"
-      class="input input-solid input-primary input-block"
+      class="input input-block input-solid border-secondary bg-background-2 text-secondary focus:border-secondary dark:border-none"
       placeholder="Procure aqui sua série favorita"
       @keyup="onKeyUp"
     />
@@ -20,7 +20,7 @@
           v-for="serie in seriesAutoComplete"
           :key="serie.image"
           @click="onAutocompleteClick(serie.name)"
-          class="dropdown-item r flex flex-row items-center gap-2 text-sm"
+          class="dropdown-item flex flex-row items-center gap-2 text-sm"
         >
           <img @error="onImageError" class="h-8 w-8 rounded-full" :src="serie.image" alt="Série" />
           {{ serie.name }}
@@ -57,7 +57,7 @@ function onImageError(event: any) {
 const fetchSeries = async () => {
   if (!serieQuery.value) return []
 
-  const result = (await SerieService.querySeries(serieQuery.value, 1)).value as QuerySeriesResponse
+  const result = (await SerieService.queryShows(serieQuery.value, 1)).value as QuerySeriesResponse
 
   const seriesNames = result.results.map((serie) => {
     return {

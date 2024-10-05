@@ -1,13 +1,13 @@
 <template>
-  <div @scroll="handleScroll" class="h-screen overflow-y-auto">
+  <div @scroll="handleScroll" class="h-screen overflow-y-auto bg-background">
     <div class="mx-auto flex max-w-[1200px] flex-col gap-2 px-4 py-8" id="top">
       <div class="mx-auto flex w-full max-w-[500px] flex-col gap-4">
-        <h1 class="text-center font-poppins text-3xl font-semibold">Diário de Séries</h1>
+        <h1 class="text-center text-3xl font-semibold text-secondary">Diário de Séries</h1>
 
         <SearchBar v-model="serieQuery" @onAutoCompleteClick="async () => await fetchSeries(1)" />
 
         <button
-          class="btn btn-primary mb-2"
+          class="btn mb-2 bg-primary text-secondary"
           :class="[
             {
               'btn-loading': isLoading
@@ -16,7 +16,7 @@
           :disabled="isSearchButtonDisabled"
           @click="fetchSeries(1)"
         >
-          Pesquisar
+          <p class="text-white">Pesquisar</p>
         </button>
       </div>
 
@@ -28,13 +28,18 @@
         <a href="#top">
           <div
             v-if="series && series?.length > 0"
-            class="fixed bottom-6 right-6 z-10 rounded-full bg-primary-text p-2"
+            class="bg-primary-text fixed bottom-6 right-6 z-10 rounded-full p-2"
           >
             <IconChevronUp class="h-5 w-5 text-primary" />
           </div>
         </a>
         <div class="flex flex-wrap justify-center gap-2" v-if="series && series?.length > 0">
-          <SeriePoster v-for="serie in series" :serie="serie" :key="serie.id" />
+          <SeriePoster
+            @click="openShowDetails(serie.id)"
+            v-for="serie in series"
+            :serie="serie"
+            :key="serie.id"
+          />
         </div>
         <div
           v-if="isLoading && page > 1"
@@ -55,6 +60,7 @@
 <script setup lang="ts">
 import SearchBar from '@/components/SearchBar/SearchBar.vue'
 import SeriePoster from '@/components/SeriePoster/SeriePoster.vue'
+import router from '@/router'
 
 import SerieService from '@/services/SerieService/SerieService'
 import type { QuerySeriesResponse, Serie } from '@/services/SerieService/types'
@@ -75,7 +81,14 @@ const seriesResultData = ref<{
   totalPages: number
   totalResults: number
 } | null>(null)
+
 const series = ref<Serie[] | null>(null)
+
+const openShowDetails = (id: number) => {
+  setTimeout(() => {
+    router.push({ name: 'show', params: { id: id.toString() } })
+  }, 500)
+}
 
 const fetchSeries = async (newPage?: number) => {
   if (newPage === 1) series.value = null
@@ -88,7 +101,7 @@ const fetchSeries = async (newPage?: number) => {
 
   isLoading.value = true
 
-  const result = await SerieService.querySeries(serieQuery.value, page.value)
+  const result = await SerieService.queryShows(serieQuery.value, page.value)
   let data: QuerySeriesResponse
 
   if (result.isRight()) {

@@ -18,26 +18,21 @@ const backfaceVisibility = plugin(function ({ addUtilities }) {
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  darkMode: 'selector',
   rippleui: {
     themes: [
-      {
-        themeName: 'dark',
-        colorScheme: 'dark',
-        colors: {
-          primary: '#3C05A3',
-          secondary: '#DDDEFF',
-          backgroundPrimary: '#19191B',
-          primaryText: '#DDDEFF'
-        }
-      },
       {
         themeName: 'light',
         colorScheme: 'light',
         colors: {
-          primary: '#3C05A3',
-          secondary: '#DDDEFF',
-          backgroundPrimary: '#f5f5f5',
-          'primary-text': '#000000'
+          primary: '#1f004d'
+        }
+      },
+      {
+        themeName: 'dark',
+        colorScheme: 'dark',
+        colors: {
+          primary: '#1f004d'
         }
       }
     ]
@@ -45,10 +40,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#3C05A3',
-        'primary-background': '#0F0E22',
-        'primary-text': '#DDDEFF',
-        secondary: 'green'
+        primary: 'var(--primary)',
+        secondary: 'var(--secondary)',
+        background: 'var(--background)',
+        'background-2': ({ opacityValue = 1 }) => `rgba(var(--background-2), ${opacityValue})`
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif']

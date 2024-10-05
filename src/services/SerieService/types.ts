@@ -19,3 +19,22 @@ export type QuerySeriesResponse = {
   totalPages: number
   totalResults: number
 }
+
+export type GetShowByIdResponse = {
+  name: string
+  backdropPath: string
+  posterPath: string
+  overview: string
+  numberOfSeasons: number
+  voteAverage: number
+  firstAirDate: string
+  lastAirDate: string
+  totalDuration: number
+  tagline: string
+  genres: {
+    id: number
+    name: string
+  }[]
+  numberOfEpisodes: number
+  status: string
+}

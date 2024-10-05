@@ -1,7 +1,7 @@
 import { type Either } from '@/core/either'
 import type { AxiosInstance } from 'axios'
 import type { ApiError } from './errors'
-import type { QuerySeriesResponse } from './types'
+import type { GetShowByIdResponse, QuerySeriesResponse } from './types'
 import {
   handleAxiosResponse,
   initService,
@@ -18,7 +18,7 @@ class SerieService {
     setRequestInterceptors(this.httpClient)
   }
 
-  public static async querySeries(
+  public static async queryShows(
     search: string,
     page: number
   ): Promise<Either<ApiError, QuerySeriesResponse>> {
@@ -27,6 +27,16 @@ class SerieService {
 
     const response = await handleAxiosResponse<QuerySeriesResponse>(request)
 
+    return response
+  }
+
+  public static async getShowById(id: number) {
+    const url = `/get-show-by-id/${id}`
+    const request = this.httpClient.get(url)
+
+    const response = await handleAxiosResponse<GetShowByIdResponse>(request)
+
+   
     return response
   }
 }

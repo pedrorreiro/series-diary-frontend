@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .poster {
+    @apply h-[370px] w-[240px] rounded-2xl;
+  }
+}
+
+p, span, h1, h2, a {
+  @apply font-poppins text-secondary;
+}
+
+.dark {
+  --primary: #1f004d;
+  --secondary: #eeeef0;
+  --background: #111111;
+  --background-2: 25, 25, 27;
+}
+
+.light {
+  --primary: #1f004d;
+  --secondary: #1e1f24;
+  --background: #ffffff;
+  --background-2: 249, 249, 251;
+}
