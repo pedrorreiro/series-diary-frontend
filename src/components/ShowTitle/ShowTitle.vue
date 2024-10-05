@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-background-2/80 flex w-full select-none flex-col gap-4 overflow-hidden rounded-[24px] p-10 backdrop-blur-sm"
+    class="flex w-full select-none flex-col gap-4 overflow-hidden rounded-[24px] bg-background-2/80 p-10 backdrop-blur-sm"
   >
     <div class="breadcrumbs text-sm text-secondary">
       <ul>
@@ -19,6 +19,16 @@
     >
       {{ title || '' }}
     </p>
+
+    <div class="dropdown">
+      <p>Selcionar temporada</p>
+
+      <div class="dropdown-menu">
+        <a class="dropdown-item">Sistema</a>
+        <a class="dropdown-item"> Escuro</a>
+        <a class="dropdown-item"> Claro</a>
+      </div>
+    </div>
   </div>
 </template>
 

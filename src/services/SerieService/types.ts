@@ -31,10 +31,21 @@ export type GetShowByIdResponse = {
   lastAirDate: string
   totalDuration: number
   tagline: string
+  type: ShowType
   genres: {
     id: number
     name: string
   }[]
   numberOfEpisodes: number
   status: string
+}
+
+export enum ShowType {
+  Documentary = 'Documentary',
+  News = 'News',
+  Miniseries = 'Miniseries',
+  Reality = 'Reality',
+  Scripted = 'Scripted',
+  TalkShow = 'Talk Show',
+  Video = 'Video',
 }
