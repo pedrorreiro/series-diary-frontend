@@ -18,6 +18,7 @@ app.use(pinia)
 app.use(router)
 app.use(i18n)
 app.use(VueQueryPlugin)
+
 app.use(Vue3Toastify, {
   autoClose: 3000,
   dangerouslyHTMLString: true

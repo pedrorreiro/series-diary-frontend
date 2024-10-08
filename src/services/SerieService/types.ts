@@ -40,6 +40,31 @@ export type GetShowByIdResponse = {
   status: string
 }
 
+export type Episode = {
+  airDate: string
+  episodeNumber: number
+  id: number
+  name: string
+  overview: string
+  productionCode: string
+  seasonNumber: number
+  showId: number
+  stillPath: string
+  voteAverage: number
+  voteCount: number
+  duration: string
+}
+
+export type GetSeasonDetailsResponse = {
+  id: number
+  airDate: string
+  episodes: Episode[]
+  name: string
+  overview: string
+  posterPath: string
+  seasonNumber: number
+}
+
 export enum ShowType {
   Documentary = 'Documentary',
   News = 'News',
@@ -47,5 +72,5 @@ export enum ShowType {
   Reality = 'Reality',
   Scripted = 'Scripted',
   TalkShow = 'Talk Show',
-  Video = 'Video',
+  Video = 'Video'
 }

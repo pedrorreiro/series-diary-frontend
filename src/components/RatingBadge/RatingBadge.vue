@@ -12,6 +12,6 @@
 import { IconStar } from '@tabler/icons-vue'
 
 defineProps<{
-  rating?: string
+  rating?: number
 }>()
 </script>

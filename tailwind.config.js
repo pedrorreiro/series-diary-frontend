@@ -41,13 +41,13 @@ export default {
     extend: {
       colors: {
         primary: 'var(--primary)',
-        secondary: 'var(--secondary)',
+        secondary: ({ opacityValue = 1 }) => `rgba(var(--secondary), ${opacityValue})`,
         background: 'var(--background)',
         'background-2': ({ opacityValue = 1 }) => `rgba(var(--background-2), ${opacityValue})`
-      },
-      fontFamily: {
-        poppins: ['Poppins', 'sans-serif']
       }
+    },
+    fontFamily: {
+      poppins: ['Poppins', 'sans-serif']
     }
   },
   plugins: [typography, forms, aspectRatio, backfaceVisibility, rippleui]

@@ -20,7 +20,7 @@
     <p class="text-justify">{{ serie.overview }}</p>
 
     <div class="my-4 flex flex-wrap gap-2">
-      <RatingBadge :rating="`${serie.voteAverage}`" />
+      <RatingBadge :rating="serie.voteAverage" />
       <span v-for="genre in serie.genres" :key="genre.id" class="badge badge-flat-primary">{{
         genre.name
       }}</span>

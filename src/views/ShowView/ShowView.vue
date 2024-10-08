@@ -1,45 +1,46 @@
 <template>
   <div class="h-full w-full bg-background p-6">
     <div class="relative mx-auto mb-40 h-[480px] w-full">
-      <div v-if="!serie" class="skeleton-pulse h-[480px] w-full rounded-[40px]" />
+      <div v-if="!show" class="skeleton-pulse h-[480px] w-full rounded-[40px]" />
+
       <img
         v-else
-        class="h-full w-full rounded-[40px] object-cover"
-        :src="serie.backdropPath"
-        draggable="false"
+        :src="show.backdropPath"
         alt="Backdrop"
+        draggable="false"
+        class="h-full w-full rounded-[40px] object-cover"
       />
 
       <ShowTitle
-        class="lg:left[0px] absolute left-1/2 max-w-[420px] -translate-x-1/2 -translate-y-1/2"
-        :title="serie?.name"
+        :title="show?.name"
+        class="absolute left-1/2 max-w-[420px] -translate-x-1/2 -translate-y-1/2 lg:left-0 lg:translate-x-0"
       />
     </div>
 
     <div class="tabs mx-auto my-8 gap-1">
       <div
-        @click="setCurrentMenuOption('about')"
-        :class="currentMenuOption === 'about' && 'tab-active'"
-        class="tab tab-active tab-pill"
+        v-for="option in menuOptions"
+        :key="option.value"
+        @click="setCurrentMenuOption(option.value)"
+        :class="['tab tab-pill', { 'tab-active': currentMenuOption === option.value }]"
       >
-        Sobre
-      </div>
-      <div
-        @click="setCurrentMenuOption('episodes')"
-        :class="currentMenuOption === 'episodes' && 'tab-active'"
-        class="tab tab-pill"
-      >
-        Lista de episódios
+        {{ option.label }}
       </div>
     </div>
 
     <div
       class="flex flex-col items-center align-top lg:flex-row lg:items-start lg:justify-between lg:gap-8"
     >
-      <ShowDetails :serie="serie" v-if="currentMenuOption === 'about' && !!serie" />
+      <ShowDetails v-if="currentMenuOption === 'about' && show" :serie="show" />
+
       <EpisodesList
-        v-else-if="currentMenuOption === 'episodes' && !!serie"
-        :seasons-list="[1, 2, 3]"
+        v-else-if="currentMenuOption === 'episodes' && show"
+        @season:change="selectedSeason = $event"
+        :show-id="showId"
+        :episodes="episodes"
+        :selected-season="selectedSeason"
+        :seasons-list="seasonsList"
+        :loading="isEpisodesLoading"
       />
     </div>
   </div>
@@ -47,34 +48,33 @@
 
 <script setup lang="ts">
 import ShowTitle from '@/components/ShowTitle/ShowTitle.vue'
-import { showErrorToast } from '@/helpers/toast-models'
-import SerieService from '@/services/SerieService/SerieService'
-import type { GetShowByIdResponse } from '@/services/SerieService/types'
 import EpisodesList from '@components/EpisodesList/EpisodesList.vue'
 import ShowDetails from '@components/ShowDetails/ShowDetails.vue'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useEpisodesQuery, useShowQuery } from './query'
 
 type MenuOption = 'about' | 'episodes'
 
-const router = useRoute()
+const route = useRoute()
+const showId = parseInt(route.params.id as string)
 
 const currentMenuOption = ref<MenuOption>('about')
+const selectedSeason = ref<number>(1)
+const seasonsList = ref([1, 2, 3])
 
-const serie = ref<GetShowByIdResponse | null>(null)
+const { data: show } = useShowQuery(showId)
+const { data: episodes, isLoading: isEpisodesLoading } = useEpisodesQuery(showId, selectedSeason)
+
+const menuOptions: Array<{
+  label: string
+  value: MenuOption
+}> = [
+  { label: 'Sobre', value: 'about' },
+  { label: 'Lista de episódios', value: 'episodes' }
+]
 
 const setCurrentMenuOption = (option: MenuOption) => {
   currentMenuOption.value = option
 }
-
-onMounted(async () => {
-  const getShowByIdResponse = await SerieService.getShowById(parseInt(router.params.id as string))
-  if (getShowByIdResponse.isRight()) {
-    serie.value = getShowByIdResponse.value
-  } else {
-    console.log(getShowByIdResponse.value)
-    const errorMessage = getShowByIdResponse.value.message
-    showErrorToast(errorMessage)
-  }
-})
 </script>
