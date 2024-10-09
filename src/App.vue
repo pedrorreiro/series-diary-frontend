@@ -1,6 +1,6 @@
 <template>
   <div class="relative mx-auto h-full max-w-[1024px] bg-background">
-    <ThemeSwitch class="fixed right-6 top-6 z-50" />
+    <!-- <ThemeSwitch class="fixed right-6 top-6 z-50" /> -->
     <LoadingView />
     <RouterView />
   </div>
@@ -9,7 +9,6 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, provide, ref } from 'vue'
 import { RouterView } from 'vue-router'
-import ThemeSwitch from './components/ThemeSwitch/ThemeSwitch.vue'
 import { DarkModeKey, LoadingKey } from './helpers/symbols'
 import LoadingView from './views/LoadingView.vue'
 

@@ -22,7 +22,10 @@
         v-for="option in menuOptions"
         :key="option.value"
         @click="setCurrentMenuOption(option.value)"
-        :class="['tab tab-pill', { 'tab-active': currentMenuOption === option.value }]"
+        :class="[
+          '!hover:bg-background tab tab-pill bg-background-2 text-secondary',
+          { '!hover:bg-background tab-active !bg-primary': currentMenuOption === option.value }
+        ]"
       >
         {{ option.label }}
       </div>
@@ -36,10 +39,9 @@
       <EpisodesList
         v-else-if="currentMenuOption === 'episodes' && show"
         @season:change="selectedSeason = $event"
-        :show-id="showId"
+        :show="show"
         :episodes="episodes"
         :selected-season="selectedSeason"
-        :seasons-list="seasonsList"
         :loading="isEpisodesLoading"
       />
     </div>
@@ -61,7 +63,6 @@ const showId = parseInt(route.params.id as string)
 
 const currentMenuOption = ref<MenuOption>('about')
 const selectedSeason = ref<number>(1)
-const seasonsList = ref([1, 2, 3])
 
 const { data: show } = useShowQuery(showId)
 const { data: episodes, isLoading: isEpisodesLoading } = useEpisodesQuery(showId, selectedSeason)

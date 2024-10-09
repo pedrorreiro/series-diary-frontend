@@ -16,6 +16,10 @@ a {
   @apply font-poppins text-secondary;
 }
 
+.dropdown-item {
+  @apply flex flex-row items-center gap-2 text-sm text-secondary hover:bg-background-2;
+}
+
 .dark {
   --primary: #1f004d;
   --secondary: 238, 238, 240;
@@ -28,4 +32,20 @@ a {
   --secondary: 30, 31, 36;
   --background: #ffffff;
   --background-2: 249, 249, 251;
+}
+
+/* ===== Scrollbar CSS ===== */
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--background-2));
+  border-radius: 8px;
 }

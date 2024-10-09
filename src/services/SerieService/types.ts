@@ -20,7 +20,7 @@ export type QuerySeriesResponse = {
   totalResults: number
 }
 
-export type GetShowByIdResponse = {
+export type Show = {
   name: string
   backdropPath: string
   posterPath: string

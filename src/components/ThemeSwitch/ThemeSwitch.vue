@@ -20,9 +20,3 @@ const darkModeKey = inject(DarkModeKey)
 const darkMode = darkModeKey?.get
 const set = darkModeKey?.set!
 </script>
-
-<style scoped lang="postcss">
-.dropdown-item {
-  @apply flex flex-row items-center gap-2 text-sm text-secondary hover:bg-background-2;
-}
-</style>

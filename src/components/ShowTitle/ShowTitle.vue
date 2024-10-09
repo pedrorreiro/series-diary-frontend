@@ -19,16 +19,6 @@
     >
       {{ title || '' }}
     </p>
-
-    <div class="dropdown">
-      <p>Selcionar temporada</p>
-
-      <div class="dropdown-menu">
-        <a class="dropdown-item">Sistema</a>
-        <a class="dropdown-item"> Escuro</a>
-        <a class="dropdown-item"> Claro</a>
-      </div>
-    </div>
   </div>
 </template>
 

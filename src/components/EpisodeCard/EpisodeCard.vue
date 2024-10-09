@@ -4,14 +4,17 @@
       :src="episode.stillPath"
       alt="thumbnail"
       class="w-full rounded-l-lg object-contain md:w-[350px]"
+      draggable="false"
     />
 
     <div class="flex flex-col gap-2 p-4">
-      <p>{{ episode.airDate }}</p>
+      <p>{{ formatIsoDate(episode.airDate) }}</p>
 
       <div class="flex flex-col gap-4">
         <p>#{{ episode.episodeNumber }} - {{ episode.name }}</p>
-        <p class="text-secondary/70 line-clamp-3 text-sm lg:line-clamp-2">{{ episode.overview }}</p>
+        <p class="line-clamp-3 text-sm text-secondary/70 lg:line-clamp-2" :title="episode.overview">
+          {{ episode.overview || 'Sem descrição...' }}
+        </p>
 
         <div class="flex flex-row">
           <div>
@@ -27,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatIsoDate } from '@/helpers/utils'
 import type { Episode } from '@/services/SerieService/types'
 import { IconCircle } from '@tabler/icons-vue'
 import RatingBadge from '../RatingBadge/RatingBadge.vue'

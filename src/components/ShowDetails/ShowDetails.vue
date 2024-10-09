@@ -30,7 +30,7 @@
       <div class="grid-rows-* grid grid-cols-2 gap-4">
         <div class="show-info">
           <p>Data de estréia</p>
-          <p>{{ formatDate(serie.firstAirDate) }}</p>
+          <p>{{ formatIsoDate(serie.firstAirDate) }}</p>
         </div>
 
         <div class="show-info first:font-semibold">
@@ -45,7 +45,7 @@
 
         <div class="show-info">
           <p>Último episódio lançado</p>
-          <p>{{ formatDate(serie.lastAirDate) }}</p>
+          <p>{{ formatIsoDate(serie.lastAirDate) }}</p>
         </div>
 
         <div class="show-info">
@@ -76,13 +76,9 @@
 
 <script setup lang="ts">
 import RatingBadge from '@/components/RatingBadge/RatingBadge.vue'
+import { formatIsoDate } from '@/helpers/utils'
 import { ShowTypeMap } from '@/services/SerieService/map'
-import { useDateTime } from '@/value-objects/date-time'
 import type { Serie } from './types'
-
-function formatDate(date: string) {
-  return useDateTime().format(new Date(date), 'dd/MM/yyyy')
-}
 
 defineProps<{
   serie: Serie
