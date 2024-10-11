@@ -1,5 +1,6 @@
-import { useDateTime } from "@/value-objects/date-time";
-
 export function formatIsoDate(date: string) {
-  return useDateTime().format(new Date(date), 'dd/MM/yyyy')
+  const isoDate = date.split('T')[0]
+  const [year, month, day] = isoDate.split('-')
+
+  return `${day}/${month}/${year}`
 }

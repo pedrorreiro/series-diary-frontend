@@ -8,7 +8,7 @@
       <!-- Frente  -->
       <div class="relative w-full backface-hidden">
         <div class="absolute top-2 flex w-full flex-row items-center justify-between px-2">
-          <RatingBadge class="z-10" :rating="voteAverage" />
+          <RatingBadge class="z-10" :rating="props.serie.voteAverage" />
         </div>
 
         <div class="relative overflow-hidden rounded-lg">
@@ -35,7 +35,6 @@
 
 <script setup lang="ts">
 import { type Serie } from '@services/SerieService/types'
-import { computed } from 'vue'
 import RatingBadge from '../RatingBadge/RatingBadge.vue'
 
 const props = defineProps({
@@ -43,10 +42,6 @@ const props = defineProps({
     type: Object as () => Serie,
     required: true
   }
-})
-
-const voteAverage = computed(() => {
-  return props.serie.voteCount > 0 ? props.serie.voteAverage.toString() : '-'
 })
 
 function onImageError(event: any) {

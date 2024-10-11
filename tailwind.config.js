@@ -3,6 +3,7 @@ import forms from '@tailwindcss/forms'
 import typography from '@tailwindcss/typography'
 import rippleui from 'rippleui'
 import plugin from 'tailwindcss/plugin'
+import { LARGE_WIDTH } from './src/helpers/constraints'
 
 const backfaceVisibility = plugin(function ({ addUtilities }) {
   addUtilities({
@@ -38,6 +39,11 @@ export default {
     ]
   },
   theme: {
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: `${LARGE_WIDTH}px`
+    },
     extend: {
       colors: {
         primary: 'var(--primary)',

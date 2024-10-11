@@ -40,9 +40,15 @@ import type { Episode, Show } from '@/services/SerieService/types'
 import { computed } from 'vue'
 import EpisodeCard from '../EpisodeCard/EpisodeCard.vue'
 
+import { LARGE_WIDTH } from '@/helpers/constraints'
+
 const emit = defineEmits(['season:change'])
+
 const screenWith = window.innerWidth
-const skeletonHeight = (screenWith * 9) / 16
+
+// Na versão de pc, o skeleton tem a altura da imagem do episódio
+// Na versão mobile, o skeleton tem a altura de 1.4x a altura da imagem (isso é aproximado)
+const skeletonHeight = screenWith >= LARGE_WIDTH ? 197 : ((screenWith * 9) / 16) * 1.4
 
 type EpisodesListProps = {
   episodes: Episode[]
