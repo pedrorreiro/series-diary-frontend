@@ -52,7 +52,7 @@ export type Episode = {
   stillPath: string
   voteAverage: number
   voteCount: number
-  duration: string
+  runtime: string
 }
 
 export type GetSeasonDetailsResponse = {

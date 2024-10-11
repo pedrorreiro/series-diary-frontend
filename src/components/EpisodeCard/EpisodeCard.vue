@@ -18,7 +18,7 @@
 
         <div class="flex flex-row">
           <div>
-            <div>{{ episode.duration }}</div>
+            <div>{{ episode.runtime }}</div>
             <RatingBadge :rating="episode.voteAverage" />
           </div>
 
