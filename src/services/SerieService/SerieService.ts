@@ -1,12 +1,17 @@
 import { type Either } from '@/core/either'
 import type { AxiosInstance } from 'axios'
 import type { ApiError } from './errors'
-import type { GetSeasonDetailsResponse, QuerySeriesResponse, Show } from './types'
+import type {
+  GetEpisodesListResponse,
+  GetSeasonDetailsResponse,
+  QuerySeriesResponse,
+  Show
+} from './types'
 import {
-    handleAxiosResponse,
-    initService,
-    setRequestInterceptors,
-    setResponseInterceptors
+  handleAxiosResponse,
+  initService,
+  setRequestInterceptors,
+  setResponseInterceptors
 } from './utils'
 
 class SerieService {
@@ -47,6 +52,28 @@ class SerieService {
     const request = this.httpClient.get(url)
 
     const response = await handleAxiosResponse<GetSeasonDetailsResponse>(request)
+
+    return response
+  }
+
+  public static async getEpisodesList(
+    showId: number,
+    seasonNumbers?: number[]
+  ): Promise<Either<ApiError, GetEpisodesListResponse>> {
+    let url = `/list-episodes-ids?showId=${showId}`
+
+    seasonNumbers &&
+      seasonNumbers.forEach((sn, index) => {
+        if (index === 0) {
+          url += `?seasonNumbers=${sn}`
+        } else {
+          url += `&seasonNumbers=${sn}`
+        }
+      })
+
+    const request = this.httpClient.get(url)
+
+    const response = await handleAxiosResponse<GetEpisodesListResponse>(request)
 
     return response
   }

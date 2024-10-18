@@ -29,13 +29,25 @@
           </p>
         </div>
       </div>
+
+      <button v-if="isWatched" class="btn btn-solid-secondary" @click.stop="unwatchShow">
+        Já assistido
+      </button>
+
+      <button v-else class="btn btn-solid-primary" @click.stop="watchShow">
+        Marcar como assistido
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useDiaryStore } from '@/stores/diary/store'
 import { type Serie } from '@services/SerieService/types'
+import { computed } from 'vue'
 import RatingBadge from '../RatingBadge/RatingBadge.vue'
+
+const diaryStore = useDiaryStore()
 
 const props = defineProps({
   serie: {
@@ -43,6 +55,18 @@ const props = defineProps({
     required: true
   }
 })
+
+const isWatched = computed(() => {
+  return diaryStore.actions.show.isWatched(props.serie.id)
+})
+
+function watchShow() {
+  diaryStore.actions.show.watch(props.serie.id)
+}
+
+function unwatchShow() {
+  diaryStore.actions.show.unwatch(props.serie.id)
+}
 
 function onImageError(event: any) {
   if (event && event.target) {

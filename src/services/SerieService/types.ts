@@ -21,6 +21,7 @@ export type QuerySeriesResponse = {
 }
 
 export type Show = {
+  id: number
   name: string
   backdropPath: string
   posterPath: string
@@ -49,6 +50,7 @@ export type Episode = {
   productionCode: string
   seasonNumber: number
   showId: number
+  seasonId: string
   stillPath: string
   voteAverage: number
   voteCount: number
@@ -64,6 +66,8 @@ export type GetSeasonDetailsResponse = {
   posterPath: string
   seasonNumber: number
 }
+
+export type GetEpisodesListResponse = number[]
 
 export enum ShowType {
   Documentary = 'Documentary',

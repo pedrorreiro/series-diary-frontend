@@ -1,26 +1,41 @@
 <template>
-  <div class="w-full">
-    <div class="dropdown">
-      <label class="btn my-2 bg-background-2 text-secondary" tabindex="0"
-        >{{ selectedSeason }}ª Temporada</label
-      >
-      <div
-        class="dropdown-menu dropdown-menu-bottom-right max-h-[200px] overflow-auto bg-background"
-      >
-        <a
-          v-for="season in seasonsList"
-          :key="season"
-          class="dropdown-item text-sm text-secondary"
-          @click="emit('season:change', season)"
+  <div class="flex w-full flex-col gap-2">
+    <div class="flex flex-row items-center gap-2">
+      <div class="dropdown">
+        <label class="btn my-2 bg-background-2 text-secondary" tabindex="0"
+          >{{ selectedSeason }}ª Temporada</label
         >
-          {{ season }}ª Temporada
-        </a>
+        <div
+          class="dropdown-menu dropdown-menu-bottom-right max-h-[200px] overflow-auto bg-background"
+        >
+          <a
+            v-for="season in seasonsList"
+            :key="season"
+            class="dropdown-item text-sm text-secondary"
+            @click="emit('season:change', season)"
+          >
+            {{ season }}ª Temporada
+          </a>
+        </div>
       </div>
+
+      <button v-if="!isSeasonWatched" class="btn btn-solid-primary" @click="watchSeason">
+        Marcar como assistido
+      </button>
+
+      <button v-else class="btn btn-outline-error" @click="unwatchSeason">
+        Marcar como não assistido
+      </button>
     </div>
 
     <div class="flex w-full flex-col gap-4 overflow-scroll">
       <template v-if="episodes.length > 0">
-        <EpisodeCard v-for="episode in episodes" :key="episode.episodeNumber" :episode="episode" />
+        <EpisodeCard
+          v-for="episode in episodes"
+          :key="episode.episodeNumber"
+          :episode="episode"
+          :show-id="show.id"
+        />
       </template>
 
       <template v-else>
@@ -41,6 +56,7 @@ import { computed } from 'vue'
 import EpisodeCard from '../EpisodeCard/EpisodeCard.vue'
 
 import { LARGE_WIDTH } from '@/helpers/constraints'
+import { useDiaryStore } from '@/stores/diary/store'
 
 const emit = defineEmits(['season:change'])
 
@@ -59,7 +75,23 @@ type EpisodesListProps = {
 
 const props = defineProps<EpisodesListProps>()
 
+const diaryStore = useDiaryStore()
+
+const episodesIds = computed(() => props.episodes.map((episode) => episode.id))
+
 const seasonsList = computed(() =>
   Array.from({ length: props.show.numberOfSeasons }, (_, i) => i + 1)
 )
+
+const isSeasonWatched = computed(() => {
+  return diaryStore.actions.season.isWatched(episodesIds.value)
+})
+
+function watchSeason() {
+  diaryStore.actions.season.watch(episodesIds.value, props.show.id)
+}
+
+function unwatchSeason() {
+  diaryStore.actions.season.unwatch(episodesIds.value, props.show.id)
+}
 </script>

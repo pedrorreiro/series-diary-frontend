@@ -26,7 +26,8 @@ export default {
         themeName: 'light',
         colorScheme: 'light',
         colors: {
-          primary: '#1f004d'
+          primary: '#1f004d',
+          secondary: '#ff0000'
         }
       },
       {
