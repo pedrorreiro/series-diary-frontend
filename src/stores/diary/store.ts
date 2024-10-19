@@ -2,6 +2,23 @@ import SerieService from '@/services/SerieService/SerieService'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+function processInChunks<T>(
+  array: Array<T>,
+  processFunction: (arg: T) => unknown,
+  chunkSize: number
+) {
+  let i = 0
+  function processNextChunk() {
+    const chunk = array.slice(i, i + chunkSize)
+    chunk.forEach(processFunction)
+    i += chunkSize
+    if (i < array.length) {
+      setTimeout(processNextChunk, 0)
+    }
+  }
+  processNextChunk()
+}
+
 export const useDiaryStore = defineStore(
   'diaryStore',
   () => {
@@ -56,35 +73,47 @@ export const useDiaryStore = defineStore(
         },
 
         async watch(showId: number) {
-          const episodeIdList = await SerieService.getEpisodesList(showId)
+          const episodeListResponse = await SerieService.getEpisodesList(showId)
 
-          if (episodeIdList.isWrong()) {
+          if (episodeListResponse.isWrong()) {
             return
           }
+
+          const episodeIdList = episodeListResponse.value
 
           showsOfInterest.value[showId] = true
           watchedShows.value[showId] = true
 
-          episodeIdList.value.forEach((episodeId) => {
-            watchedEpisodes.value[episodeId] = true
-          })
+          processInChunks(
+            episodeIdList,
+            (episodeId) => {
+              watchedEpisodes.value[episodeId] = true
+            },
+            250
+          )
 
           showsOfInterest.value[showId] = true
         },
 
         async unwatch(showId: number) {
-          const episodeIdList = await SerieService.getEpisodesList(showId)
+          const episodeListResponse = await SerieService.getEpisodesList(showId)
 
-          if (episodeIdList.isWrong()) {
+          if (episodeListResponse.isWrong()) {
             return
           }
+
+          const episodeIdList = episodeListResponse.value
 
           delete watchedShows.value[showId]
           delete showsOfInterest.value[showId]
 
-          episodeIdList.value.forEach((episodeId) => {
-            delete watchedEpisodes.value[episodeId]
-          })
+          processInChunks(
+            episodeIdList,
+            (episodeId) => {
+              delete watchedEpisodes.value[episodeId]
+            },
+            250
+          )
         }
       }
     }

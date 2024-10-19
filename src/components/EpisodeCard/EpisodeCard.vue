@@ -27,21 +27,14 @@
               <div>{{ episode.runtime }}</div>
             </div>
           </div>
-          <!-- 
-          <IconCircleCheckFilled
-            v-if="isWatched"
-            stroke="{1}"
-            class="h-6 w-6 text-green-400"
-            @click="removeEpisode"
-          /> -->
 
-          <button v-if="isWatched" class="btn btn-solid-secondary" @click="removeEpisode">
-            Já assistido
-          </button>
-
-          <button v-if="!isWatched" class="btn btn-solid-primary" @click="addEpisode">
-            Marcar como assistido
-          </button>
+          <WatchedIndicator
+            :is-watched="isWatched"
+            :is-loading="false"
+            type="icon"
+            @click:watch="addEpisode"
+            @click:unwatch="removeEpisode"
+          />
         </div>
       </div>
     </div>
@@ -55,6 +48,7 @@ import { useDiaryStore } from '@/stores/diary/store'
 import { IconClockHour1 } from '@tabler/icons-vue'
 import { computed } from 'vue'
 import RatingBadge from '../RatingBadge/RatingBadge.vue'
+import WatchedIndicator from '../WatchedIndicator/WatchedIndicator.vue'
 
 interface EpisodeCardProps {
   episode: Episode

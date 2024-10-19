@@ -20,23 +20,25 @@
             alt="poster"
           />
         </div>
-        <div class="flex flex-row items-center justify-between">
+        <div class="flex h-full flex-row items-center justify-between">
           <p
             :title="serie.name"
-            class="my-4 ml-2 truncate text-left font-semibold text-background dark:text-secondary"
+            class="ml-2 truncate text-left text-sm font-semibold text-background dark:text-secondary"
           >
             {{ serie.name }}
           </p>
+
+          <div @click.stop class="flex h-full py-3 pl-4">
+            <WatchedIndicator
+              :is-watched="isWatched"
+              :is-loading="isProcessingRequest"
+              type="icon"
+              @click:watch="watchShow"
+              @click:unwatch="unwatchShow"
+            />
+          </div>
         </div>
       </div>
-
-      <button v-if="isWatched" class="btn btn-solid-secondary" @click.stop="unwatchShow">
-        Já assistido
-      </button>
-
-      <button v-else class="btn btn-solid-primary" @click.stop="watchShow">
-        Marcar como assistido
-      </button>
     </div>
   </div>
 </template>
@@ -44,10 +46,12 @@
 <script setup lang="ts">
 import { useDiaryStore } from '@/stores/diary/store'
 import { type Serie } from '@services/SerieService/types'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import RatingBadge from '../RatingBadge/RatingBadge.vue'
+import WatchedIndicator from '../WatchedIndicator/WatchedIndicator.vue'
 
 const diaryStore = useDiaryStore()
+const isProcessingRequest = ref(false)
 
 const props = defineProps({
   serie: {
@@ -60,12 +64,16 @@ const isWatched = computed(() => {
   return diaryStore.actions.show.isWatched(props.serie.id)
 })
 
-function watchShow() {
-  diaryStore.actions.show.watch(props.serie.id)
+async function watchShow() {
+  isProcessingRequest.value = true
+  await diaryStore.actions.show.watch(props.serie.id)
+  isProcessingRequest.value = false
 }
 
-function unwatchShow() {
-  diaryStore.actions.show.unwatch(props.serie.id)
+async function unwatchShow() {
+  isProcessingRequest.value = true
+  await diaryStore.actions.show.unwatch(props.serie.id)
+  isProcessingRequest.value = false
 }
 
 function onImageError(event: any) {

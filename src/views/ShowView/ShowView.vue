@@ -14,6 +14,10 @@
       <ShowTitle
         :title="show?.name"
         class="absolute left-1/2 max-w-[420px] -translate-x-1/2 -translate-y-1/2 lg:left-0 lg:translate-x-0"
+        :is-watch-show-button-disabled="areAllEpisodesIdsLoading"
+        :is-loading="isProcessingRequest"
+        @watch-show="watchShow"
+        @unwatch-show="unwatchShow"
       />
     </div>
 
@@ -50,11 +54,12 @@
 
 <script setup lang="ts">
 import ShowTitle from '@/components/ShowTitle/ShowTitle.vue'
+import { useDiaryStore } from '@/stores/diary/store'
 import EpisodesList from '@components/EpisodesList/EpisodesList.vue'
 import ShowDetails from '@components/ShowDetails/ShowDetails.vue'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useEpisodesQuery, useShowQuery } from './query'
+import { useAllEpisodesIdsQuery, useEpisodesQuery, useShowQuery } from './query'
 
 type MenuOption = 'about' | 'episodes'
 
@@ -64,8 +69,11 @@ const showId = parseInt(route.params.id as string)
 const currentMenuOption = ref<MenuOption>('about')
 const selectedSeason = ref<number>(1)
 
+const isProcessingRequest = ref(false)
+
 const { data: show } = useShowQuery(showId)
 const { data: episodes, isLoading: isEpisodesLoading } = useEpisodesQuery(showId, selectedSeason)
+const { isLoading: areAllEpisodesIdsLoading } = useAllEpisodesIdsQuery(showId)
 
 const menuOptions: Array<{
   label: string
@@ -77,5 +85,20 @@ const menuOptions: Array<{
 
 const setCurrentMenuOption = (option: MenuOption) => {
   currentMenuOption.value = option
+}
+
+const diaryStore = useDiaryStore()
+
+async function watchShow() {
+  isProcessingRequest.value = true
+  await diaryStore.actions.show.watch(showId)
+  isProcessingRequest.value = false
+}
+
+async function unwatchShow() {
+  isProcessingRequest.value = true
+  await diaryStore.actions.show.unwatch(showId)
+
+  isProcessingRequest.value = false
 }
 </script>

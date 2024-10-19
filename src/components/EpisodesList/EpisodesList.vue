@@ -19,13 +19,13 @@
         </div>
       </div>
 
-      <button v-if="!isSeasonWatched" class="btn btn-solid-primary" @click="watchSeason">
-        Marcar como assistido
-      </button>
-
-      <button v-else class="btn btn-outline-error" @click="unwatchSeason">
-        Marcar como não assistido
-      </button>
+      <WatchedIndicator
+        type="button"
+        :is-watched="isSeasonWatched"
+        :is-loading="false"
+        @click:watch="watchSeason"
+        @click:unwatch="unwatchSeason"
+      />
     </div>
 
     <div class="flex w-full flex-col gap-4 overflow-scroll">
@@ -57,6 +57,7 @@ import EpisodeCard from '../EpisodeCard/EpisodeCard.vue'
 
 import { LARGE_WIDTH } from '@/helpers/constraints'
 import { useDiaryStore } from '@/stores/diary/store'
+import WatchedIndicator from '../WatchedIndicator/WatchedIndicator.vue'
 
 const emit = defineEmits(['season:change'])
 

@@ -35,3 +35,19 @@ export const useShowQuery = (showId: number) => {
     enabled: !!showId
   })
 }
+
+export const useAllEpisodesIdsQuery = (showId: number) => {
+  return useQuery({
+    queryKey: ['fetch-episodes-ids', showId],
+    queryFn: async () => {
+      const result = await SerieService.getEpisodesList(showId)
+
+      if (result.isRight()) {
+        return result.value
+      } else {
+        throw new Error(result.value.message)
+      }
+    },
+    enabled: !!showId
+  })
+}

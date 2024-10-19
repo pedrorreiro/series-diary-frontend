@@ -20,13 +20,14 @@
       {{ title || '' }}
     </p>
 
-    <button v-if="!isShowWatched" class="btn btn-solid-primary" @click="watchShow">
-      Marcar como assistido
-    </button>
-
-    <button v-else class="btn btn-outline-error" @click="unwatchShow">
-      Marcar como não assistido
-    </button>
+    <WatchedIndicator
+      type="button"
+      :is-watched="isShowWatched"
+      :is-loading="loadingFlag"
+      :disabled="isWatchShowButtonDisabled"
+      @click:watch="emit('watch-show')"
+      @click:unwatch="emit('unwatch-show')"
+    />
   </div>
 </template>
 
@@ -34,27 +35,25 @@
 import { useDiaryStore } from '@/stores/diary/store'
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import WatchedIndicator from '../WatchedIndicator/WatchedIndicator.vue'
 
 const route = useRoute()
+const emit = defineEmits(['watch-show', 'unwatch-show'])
 const diaryStore = useDiaryStore()
 
 const showId = ref(parseInt(route.params.id as string))
 
-defineProps<{
+const props = defineProps<{
   title?: string
+  isWatchShowButtonDisabled?: boolean
+  isLoading?: boolean
 }>()
 
 const router = useRouter()
 
 const isShowWatched = computed(() => diaryStore.actions.show.isWatched(showId.value))
 
-function watchShow() {
-  diaryStore.actions.show.watch(showId.value)
-}
-
-function unwatchShow() {
-  diaryStore.actions.show.unwatch(showId.value)
-}
+const loadingFlag = computed(() => !!props.isLoading)
 
 const goToHome = () => {
   router.push('/')
