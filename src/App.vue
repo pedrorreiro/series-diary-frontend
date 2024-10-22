@@ -1,6 +1,6 @@
 <template>
   <div class="relative mx-auto h-full max-w-[1024px] bg-background">
-    <!-- <ThemeSwitch class="fixed right-6 top-6 z-50" /> -->
+    <!--  <ThemeSwitch class="fixed right-6 top-6 z-50" /> -->
     <LoadingView />
     <RouterView />
   </div>
