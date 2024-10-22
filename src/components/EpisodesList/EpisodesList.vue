@@ -20,6 +20,7 @@
       </div>
 
       <WatchedIndicator
+        collection="season"
         type="button"
         :is-watched="isSeasonWatched"
         :is-loading="false"

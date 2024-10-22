@@ -21,6 +21,7 @@
     </p>
 
     <WatchedIndicator
+      collection="show"
       type="button"
       :is-watched="isShowWatched"
       :is-loading="loadingFlag"
