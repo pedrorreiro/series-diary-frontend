@@ -2,7 +2,7 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 
-import { inject } from '@vercel/analytics'
+// import { inject } from '@vercel/analytics'
 
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import { createPinia } from 'pinia'
@@ -29,7 +29,7 @@ app.use(Vue3Toastify, {
   dangerouslyHTMLString: true
 } as ToastContainerOptions)
 
-app.provide('analytics', inject())
+// app.provide('analytics', inject())
 
 SerieService.init()
 
