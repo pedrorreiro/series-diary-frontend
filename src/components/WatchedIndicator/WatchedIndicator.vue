@@ -26,7 +26,7 @@
         class="button btn btn-solid-primary"
         @click.stop="emit('click:watch')"
       >
-        <p class="text-center">Marcar como assistido</p>
+        <p class="text-center">{{ texts.watch }}</p>
         <IconLoader2 v-if="isLoading" class="loader" />
       </button>
 
@@ -36,7 +36,7 @@
         class="button btn btn-outline-error"
         @click.stop="emit('click:unwatch')"
       >
-        <p class="text-center">Marcar como não assistido</p>
+        <p class="text-center">{{ texts.unwatch }}</p>
         <IconLoader2 v-if="isLoading" class="loader" />
       </button>
     </template>
@@ -44,18 +44,41 @@
 </template>
 
 <script setup lang="ts">
-import { IconCircleCheck, IconCircleCheckFilled, IconLoader2 } from '@tabler/icons-vue'
+import { computed } from 'vue';
+
+type collectionType = 'show' | 'season' | 'episode'
+type collectionTypeAction = 'watch' | 'unwatch'
 
 interface Props {
-  isWatched: boolean
-  isLoading: boolean
-  type: 'icon' | 'button'
-  disabled?: boolean
+  collection?: collectionType
+  isWatched: boolean;
+  isLoading: boolean;
+  type: 'icon' | 'button';
+  disabled?: boolean;
 }
 
-const { isWatched } = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  collection: 'episode'
+})
 
 const emit = defineEmits(['click:watch', 'click:unwatch'])
+
+const watchTextDict: Record<collectionType, Record<collectionTypeAction, string | null>> = {
+  episode: {
+    watch: null,
+    unwatch: null,
+  },
+  season: {
+    watch: 'Marcar temporada',
+    unwatch: 'Desmarcar temporada',
+  },
+  show: {
+    watch: 'Marcar série',
+    unwatch: 'Desmarcar série'
+  }
+}
+
+const texts = computed(() => watchTextDict[props.collection])
 </script>
 
 <style lang="postcss" scoped>
