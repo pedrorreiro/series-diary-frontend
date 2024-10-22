@@ -44,8 +44,8 @@
 </template>
 
 <script setup lang="ts">
-import { IconCircleCheck, IconCircleCheckFilled, IconLoader2 } from '@tabler/icons-vue'
 import { computed } from 'vue';
+import { IconCircleCheck, IconCircleCheckFilled, IconLoader2 } from '@tabler/icons-vue'
 
 type collectionType = 'show' | 'season' | 'episode'
 type collectionTypeAction = 'watch' | 'unwatch'
